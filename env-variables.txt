@@ -1,0 +1,68 @@
+# Golem Network Configuration Environment Variables
+# Copy these to your .env file and fill in the appropriate values
+
+# Basic server configuration
+PORT=3000
+
+# Golem Network Settings
+# Options: "polygon", "holesky", "mainnet"
+# holesky is recommended for testing (testnet)
+GOLEM_NETWORK=holesky
+
+# Golem API Key (if using Golem's hosted service)
+# You can get this from your Golem account dashboard
+GOLEM_API_KEY=your_golem_api_key_here
+
+# Wallet Private Key (for payments)
+# This should be a private key for a wallet with funds on the chosen network
+# IMPORTANT: Keep this secure and never commit to version control
+GOLEM_WALLET_PRIVATE_KEY=your_wallet_private_key_here
+
+# Yagna App Key (if running local Yagna daemon)
+# Generate with: yagna app-key create requestor
+YAGNA_APPKEY=your_yagna_app_key_here
+
+# Subnet Tag (network subnet to use)
+# "public" is the main subnet, you can also use custom subnets
+GOLEM_SUBNET_TAG=public
+
+# Payment Network Configuration
+# Should match GOLEM_NETWORK in most cases
+GOLEM_PAYMENT_NETWORK=holesky
+
+# Payment Driver
+# "erc20" for ERC-20 tokens, "polygon" for Polygon network
+GOLEM_PAYMENT_DRIVER=erc20
+
+# Market Configuration (pricing limits)
+# Maximum hours to rent a provider
+GOLEM_RENT_HOURS=1.0
+
+# Maximum price willing to pay for starting a provider (in GLM/MATIC)
+GOLEM_MAX_START_PRICE=1.0
+
+# Maximum price per hour for CPU usage (in GLM/MATIC)
+GOLEM_MAX_CPU_PER_HOUR_PRICE=1.0
+
+# Maximum price per hour for environment usage (in GLM/MATIC)
+GOLEM_MAX_ENV_PER_HOUR_PRICE=1.0
+
+# Example configuration for testing on Holesky testnet:
+# GOLEM_NETWORK=holesky
+# GOLEM_PAYMENT_NETWORK=holesky
+# GOLEM_PAYMENT_DRIVER=erc20
+# GOLEM_SUBNET_TAG=public
+# GOLEM_RENT_HOURS=0.5
+# GOLEM_MAX_START_PRICE=0.1
+# GOLEM_MAX_CPU_PER_HOUR_PRICE=0.1
+# GOLEM_MAX_ENV_PER_HOUR_PRICE=0.1
+
+# Example configuration for production on Polygon:
+# GOLEM_NETWORK=polygon
+# GOLEM_PAYMENT_NETWORK=polygon
+# GOLEM_PAYMENT_DRIVER=polygon
+# GOLEM_SUBNET_TAG=public
+# GOLEM_RENT_HOURS=2.0
+# GOLEM_MAX_START_PRICE=1.0
+# GOLEM_MAX_CPU_PER_HOUR_PRICE=1.0
+# GOLEM_MAX_ENV_PER_HOUR_PRICE=1.0
