@@ -1,68 +1,53 @@
-# Golem Network Configuration Environment Variables
+# GolemDB Configuration Environment Variables
 # Copy these to your .env file and fill in the appropriate values
 
 # Basic server configuration
 PORT=3000
 
-# Golem Network Settings
-# Options: "polygon", "holesky", "mainnet"
-# holesky is recommended for testing (testnet)
-GOLEM_NETWORK=holesky
+# GolemDB Chain Configuration
+# Chain ID for the blockchain network (1 = Ethereum Mainnet, 11155111 = Sepolia, etc.)
+GOLEMDB_CHAIN_ID=1
 
-# Golem API Key (if using Golem's hosted service)
-# You can get this from your Golem account dashboard
-GOLEM_API_KEY=your_golem_api_key_here
+# REQUIRED: RPC URL for blockchain connection
+# You can use public RPCs or your own node
+GOLEMDB_RPC_URL=https://eth.llamarpc.com
 
-# Wallet Private Key (for payments)
-# This should be a private key for a wallet with funds on the chosen network
-# IMPORTANT: Keep this secure and never commit to version control
-GOLEM_WALLET_PRIVATE_KEY=your_wallet_private_key_here
+# Optional: WebSocket URL for real-time updates
+GOLEMDB_WS_URL=wss://eth.llamarpc.com
 
-# Yagna App Key (if running local Yagna daemon)
-# Generate with: yagna app-key create requestor
-YAGNA_APPKEY=your_yagna_app_key_here
+# Account Data (for write operations)
+# This should be your private key or account configuration
+# Leave empty for read-only access
+GOLEMDB_ACCOUNT_DATA=your_account_private_key_here
 
-# Subnet Tag (network subnet to use)
-# "public" is the main subnet, you can also use custom subnets
-GOLEM_SUBNET_TAG=public
+# GolemDB Read-Only Mode
+# Set to "true" to force read-only mode even if account data is provided
+# Set to "false" or leave empty to use full client when account data is available
+GOLEMDB_READ_ONLY=false
 
-# Payment Network Configuration
-# Should match GOLEM_NETWORK in most cases
-GOLEM_PAYMENT_NETWORK=holesky
+# Example configuration for Ethereum Mainnet (read-only):
+# GOLEMDB_CHAIN_ID=1
+# GOLEMDB_RPC_URL=https://eth.llamarpc.com
+# GOLEMDB_WS_URL=wss://eth.llamarpc.com
+# GOLEMDB_READ_ONLY=true
 
-# Payment Driver
-# "erc20" for ERC-20 tokens, "polygon" for Polygon network
-GOLEM_PAYMENT_DRIVER=erc20
+# Example configuration for Sepolia Testnet (read-only):
+# GOLEMDB_CHAIN_ID=11155111
+# GOLEMDB_RPC_URL=https://sepolia.llamarpc.com
+# GOLEMDB_WS_URL=wss://sepolia.llamarpc.com
+# GOLEMDB_READ_ONLY=true
 
-# Market Configuration (pricing limits)
-# Maximum hours to rent a provider
-GOLEM_RENT_HOURS=1.0
+# Example configuration with write access (requires private key):
+# GOLEMDB_CHAIN_ID=1
+# GOLEMDB_RPC_URL=https://eth.llamarpc.com
+# GOLEMDB_WS_URL=wss://eth.llamarpc.com
+# GOLEMDB_ACCOUNT_DATA=0x1234567890abcdef...
+# GOLEMDB_READ_ONLY=false
 
-# Maximum price willing to pay for starting a provider (in GLM/MATIC)
-GOLEM_MAX_START_PRICE=1.0
-
-# Maximum price per hour for CPU usage (in GLM/MATIC)
-GOLEM_MAX_CPU_PER_HOUR_PRICE=1.0
-
-# Maximum price per hour for environment usage (in GLM/MATIC)
-GOLEM_MAX_ENV_PER_HOUR_PRICE=1.0
-
-# Example configuration for testing on Holesky testnet:
-# GOLEM_NETWORK=holesky
-# GOLEM_PAYMENT_NETWORK=holesky
-# GOLEM_PAYMENT_DRIVER=erc20
-# GOLEM_SUBNET_TAG=public
-# GOLEM_RENT_HOURS=0.5
-# GOLEM_MAX_START_PRICE=0.1
-# GOLEM_MAX_CPU_PER_HOUR_PRICE=0.1
-# GOLEM_MAX_ENV_PER_HOUR_PRICE=0.1
-
-# Example configuration for production on Polygon:
-# GOLEM_NETWORK=polygon
-# GOLEM_PAYMENT_NETWORK=polygon
-# GOLEM_PAYMENT_DRIVER=polygon
-# GOLEM_SUBNET_TAG=public
-# GOLEM_RENT_HOURS=2.0
-# GOLEM_MAX_START_PRICE=1.0
-# GOLEM_MAX_CPU_PER_HOUR_PRICE=1.0
-# GOLEM_MAX_ENV_PER_HOUR_PRICE=1.0
+# Additional Notes:
+# - Use a reliable RPC provider (Infura, Alchemy, QuickNode, or public RPCs)
+# - For write operations, you need a private key with sufficient ETH for gas fees
+# - Keep your private key secure and never commit to version control
+# - Use testnet chains (Sepolia, Goerli) for development and mainnet for production
+# - WebSocket URL is optional but recommended for real-time updates
+# - Read-only mode doesn't require any account data or private keys

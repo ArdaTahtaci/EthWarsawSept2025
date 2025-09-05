@@ -1,62 +1,44 @@
-import { GolemNetwork } from "@golem-sdk/golem-js";
+import { createClient, createROClient } from "golem-base-sdk";
 
-export interface GolemConfig {
-    network: "polygon" | "holesky" | "mainnet";
-    apiKey?: string;
-    walletPrivateKey?: string;
-    yagnaAppKey?: string;
-    subnetTag?: string;
-    payment: {
-        network: "polygon" | "holesky" | "mainnet";
-        driver: "erc20" | "polygon";
-    };
+export interface GolemDBConfig {
+    chainId: number;
+    rpcUrl: string;
+    wsUrl?: string;
+    accountData?: any;
+    readOnly?: boolean;
 }
 
-export function makeGolemClient(): GolemNetwork {
-    const config: GolemConfig = {
-        network: (process.env.GOLEM_NETWORK as "polygon" | "holesky" | "mainnet") || "holesky",
-        apiKey: process.env.GOLEM_API_KEY,
-        walletPrivateKey: process.env.GOLEM_WALLET_PRIVATE_KEY,
-        yagnaAppKey: process.env.YAGNA_APPKEY,
-        subnetTag: process.env.GOLEM_SUBNET_TAG || "public",
-        payment: {
-            network: (process.env.GOLEM_PAYMENT_NETWORK as "polygon" | "holesky" | "mainnet") || "holesky",
-            driver: (process.env.GOLEM_PAYMENT_DRIVER as "erc20" | "polygon") || "erc20",
-        },
+export function makeGolemClient() {
+    const config: GolemDBConfig = {
+        chainId: parseInt(process.env.GOLEMDB_CHAIN_ID || "1"), // Default to Ethereum mainnet
+        rpcUrl: process.env.GOLEMDB_RPC_URL || "https://eth.llamarpc.com",
+        wsUrl: process.env.GOLEMDB_WS_URL,
+        accountData: process.env.GOLEMDB_ACCOUNT_DATA,
+        readOnly: process.env.GOLEMDB_READ_ONLY === "true" || !process.env.GOLEMDB_ACCOUNT_DATA,
     };
 
-    const golemOptions: any = {
-        payment: {
-            network: config.payment.network,
-            driver: config.payment.driver,
-        },
-        market: {
-            pricing: {
-                model: "linear",
-                maxStartPrice: parseFloat(process.env.GOLEM_MAX_START_PRICE || "1.0"),
-                maxCpuPerHourPrice: parseFloat(process.env.GOLEM_MAX_CPU_PER_HOUR_PRICE || "1.0"),
-                maxEnvPerHourPrice: parseFloat(process.env.GOLEM_MAX_ENV_PER_HOUR_PRICE || "1.0"),
-            },
-        },
-    };
-
-    // Add API key if provided
-    if (config.apiKey) {
-        golemOptions.api = {
-            key: config.apiKey,
-        };
+    if (!config.rpcUrl) {
+        throw new Error("GOLEMDB_RPC_URL is required");
     }
 
-    // Add Yagna app key if provided
-    if (config.yagnaAppKey) {
-        golemOptions.yagna = {
-            apiKey: config.yagnaAppKey,
-        };
+    // Create read-only client if no account data or explicitly set to read-only
+    if (!config.accountData || config.readOnly) {
+        console.log("Creating GolemDB read-only client");
+        return createROClient(
+            config.chainId,
+            config.rpcUrl,
+            config.wsUrl || null
+        );
     }
 
-    const golem = new GolemNetwork(golemOptions);
-
-    return golem;
+    // Create full client with write permissions
+    console.log("Creating GolemDB client with account data");
+    return createClient(
+        config.chainId,
+        config.accountData,
+        config.rpcUrl,
+        config.wsUrl || null
+    );
 }
 
 export default makeGolemClient;

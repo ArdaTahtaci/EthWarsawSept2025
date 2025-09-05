@@ -9,11 +9,11 @@
     "preinstall": "node -e \"const v=parseInt(process.versions.node.split('.')[0]); if(v<20||v>22){console.error('❌ Node 20–22 required'); process.exit(1)}\""
   },
   "dependencies": {
-    "@golem-sdk/golem-js": "^3.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ethers": "^6.15.0",
     "express": "^4.19.2",
+    "golem-base-sdk": "^0.1.16",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
