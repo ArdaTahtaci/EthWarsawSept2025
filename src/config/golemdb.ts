@@ -10,8 +10,8 @@ export interface GolemDBConfig {
 
 export function makeGolemClient() {
     const config: GolemDBConfig = {
-        chainId: parseInt(process.env.GOLEMDB_CHAIN_ID || "1"), // Default to Ethereum mainnet
-        rpcUrl: process.env.GOLEMDB_RPC_URL || "https://eth.llamarpc.com",
+        chainId: parseInt(process.env.GOLEMDB_CHAIN_ID || "60138453033"), // Default to Ethereum mainnet
+        rpcUrl: process.env.GOLEMDB_RPC_URL || "https://ethwarsaw.holesky.golemdb.io/rpc",
         wsUrl: process.env.GOLEMDB_WS_URL,
         accountData: process.env.GOLEMDB_ACCOUNT_DATA,
         readOnly: process.env.GOLEMDB_READ_ONLY === "true" || !process.env.GOLEMDB_ACCOUNT_DATA,

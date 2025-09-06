@@ -2,6 +2,8 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import { makeGolemClient } from "./config/golemdb";
+import { setUserRepository } from './controller/auth.controller';
+import { UserRepository } from './domains/users/user.repository';
 
 const app = express();
 app.use(helmet());
@@ -16,6 +18,9 @@ app.use(cors({
 app.use(express.json());
 
 const client = makeGolemClient();
+// setUserRepository(UserRepository);
+
+
 
 
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
