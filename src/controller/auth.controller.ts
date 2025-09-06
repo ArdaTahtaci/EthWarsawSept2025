@@ -5,8 +5,8 @@ import {
     type UpsertBodyDTO,
     type CivicUserClaims,
     type PublicUser,
-} from '../domains/auth/auth.dto';
-import type { UserRepository } from '../domains/users/user.repository'; // kendi path'ine göre düzelt
+} from '../repository/auth/auth.dto';
+import type { UserRepository } from '../repository/users/user.repository'; // kendi path'ine göre düzelt
 
 // ---------- Repository DI ----------
 let userRepo: UserRepository | undefined;

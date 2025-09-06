@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { makeGolemClient } from "./config/golemdb";
 import { setUserRepository } from './controller/auth.controller';
-import { UserRepository } from './domains/users/user.repository';
+import { UserRepository } from './repository/users/user.repository';
 
 const app = express();
 app.use(helmet());

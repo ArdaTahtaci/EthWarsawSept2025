@@ -1,53 +1,41 @@
-# GolemDB Configuration Environment Variables
+# GolemDB Configuration Environment Variables (ETHWarsaw 2025)
 # Copy these to your .env file and fill in the appropriate values
 
 # Basic server configuration
 PORT=3000
 
-# GolemDB Chain Configuration
-# Chain ID for the blockchain network (1 = Ethereum Mainnet, 11155111 = Sepolia, etc.)
-GOLEMDB_CHAIN_ID=1
+# ETHWarsaw Testnet Configuration (Official Documentation)
+# Chain ID for ETHWarsaw Holesky testnet
+GOLEMDB_CHAIN_ID=60138453033
 
-# REQUIRED: RPC URL for blockchain connection
-# You can use public RPCs or your own node
-GOLEMDB_RPC_URL=https://eth.llamarpc.com
+# ETHWarsaw testnet endpoints (from official documentation)
+GOLEMDB_RPC_URL=https://ethwarsaw.holesky.golemdb.io/rpc
+GOLEMDB_WS_URL=wss://ethwarsaw.holesky.golemdb.io/rpc/ws
 
-# Optional: WebSocket URL for real-time updates
-GOLEMDB_WS_URL=wss://eth.llamarpc.com
+# Private Key (for write operations) - following official documentation format
+# Get test ETH from: https://ethwarsaw.holesky.golemdb.io/faucet
+# Format: 0x... (with or without 0x prefix)
+PRIVATE_KEY=0x...
 
-# Account Data (for write operations)
-# This should be your private key or account configuration
-# Leave empty for read-only access
-GOLEMDB_ACCOUNT_DATA=your_account_private_key_here
+# Alternative: Legacy support for GOLEMDB_ACCOUNT_DATA
+# GOLEMDB_ACCOUNT_DATA=0x...
 
-# GolemDB Read-Only Mode
-# Set to "true" to force read-only mode even if account data is provided
-# Set to "false" or leave empty to use full client when account data is available
-GOLEMDB_READ_ONLY=false
+# Example configuration for ETHWarsaw Testnet (read-only):
+# GOLEMDB_CHAIN_ID=60138453033
+# GOLEMDB_RPC_URL=https://ethwarsaw.holesky.golemdb.io/rpc
+# GOLEMDB_WS_URL=wss://ethwarsaw.holesky.golemdb.io/rpc/ws
+# (No PRIVATE_KEY = read-only mode)
 
-# Example configuration for Ethereum Mainnet (read-only):
-# GOLEMDB_CHAIN_ID=1
-# GOLEMDB_RPC_URL=https://eth.llamarpc.com
-# GOLEMDB_WS_URL=wss://eth.llamarpc.com
-# GOLEMDB_READ_ONLY=true
+# Example configuration for ETHWarsaw Testnet (with write access):
+# GOLEMDB_CHAIN_ID=60138453033
+# GOLEMDB_RPC_URL=https://ethwarsaw.holesky.golemdb.io/rpc
+# GOLEMDB_WS_URL=wss://ethwarsaw.holesky.golemdb.io/rpc/ws
+# PRIVATE_KEY=0x1234567890abcdef...
 
-# Example configuration for Sepolia Testnet (read-only):
-# GOLEMDB_CHAIN_ID=11155111
-# GOLEMDB_RPC_URL=https://sepolia.llamarpc.com
-# GOLEMDB_WS_URL=wss://sepolia.llamarpc.com
-# GOLEMDB_READ_ONLY=true
-
-# Example configuration with write access (requires private key):
-# GOLEMDB_CHAIN_ID=1
-# GOLEMDB_RPC_URL=https://eth.llamarpc.com
-# GOLEMDB_WS_URL=wss://eth.llamarpc.com
-# GOLEMDB_ACCOUNT_DATA=0x1234567890abcdef...
-# GOLEMDB_READ_ONLY=false
-
-# Additional Notes:
-# - Use a reliable RPC provider (Infura, Alchemy, QuickNode, or public RPCs)
-# - For write operations, you need a private key with sufficient ETH for gas fees
+# Important Notes:
+# - Get test ETH from ETHWarsaw faucet: https://ethwarsaw.holesky.golemdb.io/faucet
+# - View transactions on explorer: https://ethwarsaw.holesky.golemdb.io/explorer
+# - Dashboard: https://ethwarsaw.holesky.golemdb.io/dashboard
 # - Keep your private key secure and never commit to version control
-# - Use testnet chains (Sepolia, Goerli) for development and mainnet for production
-# - WebSocket URL is optional but recommended for real-time updates
-# - Read-only mode doesn't require any account data or private keys
+# - Each block is ~2 seconds, so BTL of 300 = ~10 minutes
+# - WebSocket URL enables real-time event monitoring
