@@ -129,11 +129,13 @@ const toBytes = (obj: unknown) => encoder.encode(JSON.stringify(obj));
 const fromBytes = <T>(bytes: Uint8Array) => JSON.parse(decoder.decode(bytes)) as T;
 
 // Date normalization for JSON parsing
-function reviveDates<T extends { createdAt?: any; updatedAt?: any }>(o: T): T {
+function reviveDates<T extends { createdAt?: any; updatedAt?: any; dueDate?: any; paidAt?: any }>(o: T): T {
   return {
     ...o,
     createdAt: o.createdAt ? new Date(o.createdAt) : undefined,
     updatedAt: o.updatedAt ? new Date(o.updatedAt) : undefined,
+    dueDate: o.dueDate ? new Date(o.dueDate) : undefined,
+    paidAt: o.paidAt ? new Date(o.paidAt) : undefined,
   };
 }
 const NOW_EPOCH = () => Math.floor(Date.now() / 1000);
@@ -220,6 +222,9 @@ export class GolemInvoiceRepository implements InvoiceService {
       updatedAtEpoch: now,
       createdAt: new Date(now * 1000),
       updatedAt: new Date(now * 1000),
+      // Auto-generate epoch fields for date fields
+      dueDateEpoch: entityInput.dueDate ? Math.floor(entityInput.dueDate.getTime() / 1000) : undefined,
+      paidAtEpoch: entityInput.paidAt ? Math.floor(entityInput.paidAt.getTime() / 1000) : undefined,
     };
 
     const inputs: CreateEntityInput[] = [{
@@ -237,7 +242,7 @@ export class GolemInvoiceRepository implements InvoiceService {
   async read(id: string): Promise<Invoice | null> {
     const rows = await this.client.queryEntities(`type = "invoices" && id = "${id}"`, { limit: 1 });
     if (!rows.length) return null;
-    const v = fromBytes<Invoice>(rows[0].storageValue);
+    const v = reviveDates(fromBytes<Invoice>(rows[0].storageValue));
     v.entityKey = rows[0].entityKey;
     return v;
   }
@@ -246,7 +251,7 @@ export class GolemInvoiceRepository implements InvoiceService {
     if (this.client.getEntityByKey) {
       const row = await this.client.getEntityByKey(entityKey);
       if (!row) return null;
-      const v = fromBytes<Invoice>(row.storageValue);
+      const v = reviveDates(fromBytes<Invoice>(row.storageValue));
       v.entityKey = row.entityKey;
       return v;
     }
@@ -307,6 +312,9 @@ export class GolemInvoiceRepository implements InvoiceService {
       version: (current.version ?? 1) + 1,
       updatedAtEpoch: now,
       updatedAt: new Date(now * 1000),
+      // Auto-generate epoch fields for updated date fields
+      dueDateEpoch: 'dueDate' in updates && updates.dueDate ? Math.floor(updates.dueDate.getTime() / 1000) : current.dueDateEpoch,
+      paidAtEpoch: 'paidAt' in updates && updates.paidAt ? Math.floor(updates.paidAt.getTime() / 1000) : current.paidAtEpoch,
     };
 
     const input: UpdateEntityInput = {
