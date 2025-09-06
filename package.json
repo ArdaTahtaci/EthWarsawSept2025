@@ -6,10 +6,6 @@
     "dev": "tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "demo": "tsx src/examples/golemdb-demo.ts",
-    "test": "tsx src/tests/golemdb.test.ts",
-    "test:unit": "tsx src/tests/unit.test.ts",
-    "test:all": "npm run test:unit && npm run test",
     "preinstall": "node -e \"const v=parseInt(process.versions.node.split('.')[0]); if(v<20||v>22){console.error('❌ Node 20–22 required'); process.exit(1)}\""
   },
   "dependencies": {
